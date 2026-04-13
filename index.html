@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>映緹影像工作室 | IntiDoga</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest: #1e3a32;
+  --forest-dark: #152b25;
+  --forest-deep: #0e1f1a;
+  --rust: #c45a2a;
+  --rust-light: #d4724a;
+  --cream: #f0ebe0;
+  --cream-dim: #c8bfa8;
+  --text: #f0ebe0;
+  --muted: #7a9088;
+  --card-bg: #192e27;
+  --border: rgba(240,235,224,0.1);
+  --border-rust: rgba(196,90,42,0.3);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--forest-deep);
+  color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--rust);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: normal;
+}
+.cursor.expand {
+  width: 36px; height: 36px;
+  background: rgba(196,90,42,0.25);
+}
+
+/* NOISE */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 3rem;
+  background: rgba(14,31,26,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand { display: flex; flex-direction: column; gap: 0.05rem; text-decoration: none; }
+.nav-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  color: var(--cream);
+  letter-spacing: 0.15em;
+}
+.nav-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.72rem;
+  color: var(--rust-light);
+  letter-spacing: 0.18em;
+}
+
+.nav-links {
+  display: flex; gap: 2.5rem; list-style: none;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  transition: color 0.2s;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+}
+.nav-links a:hover { color: var(--cream); }
+
+.nav-cta {
+  padding: 0.5rem 1.4rem;
+  background: var(--rust);
+  color: #fff !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.12em !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--rust-light) !important; color: #fff !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 3rem 7rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(196,90,42,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 10% 80%, rgba(30,58,50,0.6) 0%, transparent 70%),
+    linear-gradient(160deg, var(--forest-deep) 0%, var(--forest-dark) 100%);
+}
+
+/* decorative vertical lines */
+.hero-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  overflow: hidden;
+}
+.hero-lines span {
+  position: absolute; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(240,235,224,0.06) 30%, rgba(240,235,224,0.06) 70%, transparent 100%);
+}
+.hero-lines span:nth-child(1) { left: 33%; }
+.hero-lines span:nth-child(2) { left: 66%; }
+
+.hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: var(--rust-light);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.2s forwards;
+}
+.hero-tag::before {
+  content: '';
+  display: block; width: 28px; height: 1px;
+  background: var(--rust);
+}
+
+.hero-title {
+  font-family: 'Zen Old Mincho', 'Noto Serif TC', serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 5.5vw, 4.6rem);
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  color: var(--cream);
+  opacity: 0;
+  animation: fadeUp 0.9s 0.35s forwards;
+}
+
+.hero-title .accent {
+  color: var(--rust-light);
+  font-style: normal;
+  font-family: 'Zen Old Mincho', 'Noto Serif TC', serif;
+  font-size: 1em;
+  letter-spacing: 0.12em;
+}
+
+.hero-sub {
+  margin-top: 1.8rem;
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.9;
+  max-width: 460px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.5s forwards;
+}
+
+.hero-actions {
+  margin-top: 3rem;
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.65s forwards;
+}
+
+.btn-rust {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  background: var(--rust);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-rust:hover { background: var(--rust-light); transform: translateY(-2px); }
+
+.btn-outline {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  border: 1px solid rgba(240,235,224,0.2);
+  color: var(--cream-dim);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: var(--cream); color: var(--cream); }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem; right: 3rem;
+  display: flex; align-items: center; gap: 0.8rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 1s 1.2s forwards;
+}
+.scroll-line {
+  width: 40px; height: 1px;
+  background: var(--muted);
+  position: relative; overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  left: -100%; top: 0; bottom: 0; width: 100%;
+  background: var(--rust);
+  animation: slideRight 1.5s 1.5s infinite;
+}
+
+/* PROMISE STRIP */
+.promise-strip {
+  background: var(--forest);
+  border-top: 1px solid var(--border-rust);
+  border-bottom: 1px solid var(--border-rust);
+  padding: 2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.promise-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.6rem 2.5rem;
+  border-right: 1px solid var(--border);
+  color: var(--cream-dim);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+.promise-item:last-child { border-right: none; }
+.promise-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--rust);
+  flex-shrink: 0;
+}
+
+/* SECTION WRAPPER */
+.section-wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 6rem 3rem;
+}
+
+.section-label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1rem;
+}
+.section-num {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: var(--rust-light);
+  text-transform: uppercase;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+.section-rule {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border-rust), transparent);
+}
+
+.section-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: var(--rust);
+  margin-bottom: 0.8rem;
+  opacity: 1;
+}
+
+.section-desc {
+  font-size: 0.9rem;
+  color: #7a6a54;
+  line-height: 1.8;
+  max-width: 580px;
+  margin-bottom: 3.5rem;
+}
+
+/* IP CARDS */
+.ip-intro-box {
+  background: var(--forest);
+  border: 1px solid var(--border-rust);
+  border-left: 3px solid var(--rust);
+  padding: 1.8rem 2.2rem;
+  margin-bottom: 3rem;
+  max-width: 720px;
+}
+.ip-intro-box p {
+  font-size: 0.9rem;
+  color: var(--cream-dim);
+  line-height: 1.9;
+}
+.ip-intro-box strong {
+  color: var(--rust-light);
+  font-weight: 500;
+}
+
+.ip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+.ip-card {
+  background: var(--card-bg);
+  padding: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.ip-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--rust);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.ip-card:hover { background: #1e3530; }
+.ip-card:hover::after { transform: scaleX(1); }
+
+.ip-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: rgba(196,90,42,0.15);
+  line-height: 1;
+  position: absolute;
+  top: 1.5rem; right: 1.8rem;
+}
+
+.ip-industry {
+  display: inline-block;
+  padding: 0.22rem 0.8rem;
+  border: 1px solid var(--border-rust);
+  color: var(--rust-light);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.ip-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.5;
+}
+
+.ip-highlight {
+  font-size: 0.85rem;
+  color: var(--cream-dim);
+  line-height: 1.75;
+  flex: 1;
+}
+
+.ip-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.ip-stat-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--rust-light);
+}
+.ip-stat-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.ip-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  margin-top: 0.3rem;
+}
+.ip-link:hover { color: var(--rust-light); }
+.ip-link svg { width: 13px; height: 13px; }
+
+/* DIVIDER */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 3rem;
+}
+
+/* BRAND VIDEO CARDS */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.v-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.v-card:hover {
+  border-color: var(--border-rust);
+  transform: translateY(-4px);
+}
+
+.v-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(196,90,42,0.15);
+  border: 1px solid var(--border-rust);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--rust-light);
+}
+
+.v-industry {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.v-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.v-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(196,90,42,0.15);
+  border: 1px solid var(--border-rust);
+  font-size: 0.72rem;
+  color: var(--rust-light);
+  width: fit-content;
+}
+
+.v-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+  margin-top: auto;
+}
+.v-link:hover { color: var(--rust-light); }
+.v-link svg { width: 12px; }
+
+/* CONTACT */
+.contact-section {
+  background: var(--forest);
+  border-top: 1px solid var(--border-rust);
+  padding: 6rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-section::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(196,90,42,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.contact-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+
+.contact-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--rust-light);
+  margin-bottom: 1rem;
+}
+
+.contact-title {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: 1.2rem;
+}
+
+.contact-sub {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  margin-bottom: 2.8rem;
+}
+
+/* FOOTER */
+footer {
+  background: var(--forest-deep);
+  border-top: 1px solid var(--border);
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-brand { display: flex; flex-direction: column; }
+.footer-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  color: var(--cream);
+  letter-spacing: 0.12em;
+}
+.footer-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.7rem;
+  color: var(--rust-light);
+  letter-spacing: 0.15em;
+}
+.footer-copy {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slideRight {
+  from { left: -100%; } to { left: 100%; }
+}
+
+.v-card-confidential {
+  border: 1px solid rgba(196,90,42,0.25);
+  background: linear-gradient(135deg, var(--card-bg) 0%, rgba(196,90,42,0.05) 100%);
+}
+
+.v-icon-lock {
+  background: rgba(196,90,42,0.12);
+  border-color: rgba(196,90,42,0.4);
+  color: var(--rust-light);
+}
+
+.v-confidential-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px dashed rgba(196,90,42,0.4);
+  color: var(--rust-light);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  margin-top: auto;
+  width: fit-content;
+  opacity: 0.85;
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  nav { padding: 1rem 1.4rem; }
+  .nav-links { display: none; }
+  .hero { padding: 0 1.4rem 5rem; }
+  .promise-strip { padding: 1.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+  .promise-item { border-right: none; border-bottom: 1px solid var(--border); width: 100%; justify-content: center; }
+  .promise-item:last-child { border-bottom: none; }
+  .section-wrap { padding: 4rem 1.4rem; }
+  .contact-section { padding: 4rem 1.4rem; }
+  footer { padding: 1.5rem 1.4rem; }
+  .scroll-hint { display: none; }
+  body { cursor: auto; }
+  .cursor { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <span class="nav-zh">映緹影像工作室</span>
+    <span class="nav-en">IntiDoga</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#ip">個人 IP</a></li>
+    <li><a href="#brand">品牌影片</a></li>
+    <li><a href="#contact" class="nav-cta">立即諮詢</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines">
+    <span></span><span></span>
+  </div>
+  <div class="hero-content">
+    <p class="hero-tag">內容策略 × 短影音製作 × 個人 IP 經營</p>
+    <h1 class="hero-title">製造<span class="accent">自然流量</span>的<br>專門戶</h1>
+    <p class="hero-sub">
+      為你量身訂作個人 IP 頻道<br>
+      從零建立・精準抓出個人特質・長期穩定陪跑<br>
+      一對一規劃 · 個人短影音 · 品牌形象短影音
+    </p>
+    <div class="hero-actions">
+      <a href="#ip" class="btn-rust">查看作品集</a>
+      <a href="https://lin.ee/okmSdK8" class="btn-outline" target="_blank">免費諮詢</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- PROMISE STRIP -->
+<div class="promise-strip">
+  <div class="promise-item"><span class="promise-dot"></span>從零建立頻道風格</div>
+  <div class="promise-item"><span class="promise-dot"></span>精準抓出個人特質</div>
+  <div class="promise-item"><span class="promise-dot"></span>企劃・剪輯・拍攝一條龍</div>
+  <div class="promise-item"><span class="promise-dot"></span>長期穩定陪跑</div>
+</div>
+
+<!-- SECTION 01: 個人 IP -->
+<div class="section-wrap" id="ip">
+  <div class="section-label">
+    <span class="section-num">01 — Personal IP</span>
+    <div class="section-rule"></div>
+  </div>
+  <h2 class="section-title">個人 IP 頻道經營</h2>
+  <p class="section-desc">工作室最核心的服務項目。我手把手帶領各行業老闆，從零建立專屬的頻道風格與影片版型，一對一規劃內容策略，讓你快速精準找到自己的表達方式。</p>
+
+  <div class="ip-intro-box">
+    <p>
+      每位客戶都來自不同的行業背景，有些一開始對鏡頭感到陌生，有些對社群經營感到迷惘——<br>
+      但透過<strong>一對一的深度陪跑</strong>，我們幫每一位主理人建立了屬於自己的頻道語言，<br>
+      讓他們能夠<strong>長期穩定地持續輸出內容</strong>，並建立真實的個人品牌影響力。
+    </p>
+  </div>
+
+  <div class="ip-grid">
+
+    <!-- CARD 1 -->
+    <div class="ip-card">
+      <span class="ip-num">01</span>
+      <span class="ip-industry">民宿業</span>
+      <h3 class="ip-title">民宿 CEO<br>精準建立老闆形象</h3>
+      <p class="ip-highlight">從頻道定位、拍攝風格到每週內容規劃，手把手從 0 建立頻道風格，3 個月內從 200 粉絲突破萬人追蹤。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">200 → 1萬+</span>
+        <span class="ip-stat-label">粉絲 · 3 個月達成</span>
+      </div>
+      <a href="https://www.instagram.com/imsimonboss?igsh=MXZzaTRsazN2cWZoZQ==" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="ip-card">
+      <span class="ip-num">02</span>
+      <span class="ip-industry">餐飲業</span>
+      <h3 class="ip-title">韓國餐廳年輕老闆<br>首支品牌影片爆量</h3>
+      <p class="ip-highlight">協助建立個人頻道定位與影片風格，首支品牌影片即達 10 萬觀看，快速累積品牌信任感。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">10 萬</span>
+        <span class="ip-stat-label">首支影片觀看數</span>
+      </div>
+      <a href="https://www.instagram.com/yong_1204?igsh=a2ZkMGN1a2Myc20w" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="ip-card">
+      <span class="ip-num">03</span>
+      <span class="ip-industry">寵物品牌</span>
+      <h3 class="ip-title">韓國寵物品牌主理人<br>無廣告首支破 13 萬</h3>
+      <p class="ip-highlight">零廣告投放，純靠內容策略與自然流量，首支影片突破 13 萬觀看，驗證精準選題的爆發力。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">13 萬</span>
+        <span class="ip-stat-label">首支觀看 · 無廣告</span>
+      </div>
+      <a href="https://www.instagram.com/reel/DRw_JMsEe6A/?igsh=NnVjbHEzZW16ZzY=" class="ip-link" target="_blank">
+        查看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="ip-card">
+      <span class="ip-num">04</span>
+      <span class="ip-industry">居家裝潢</span>
+      <h3 class="ip-title">窗簾品牌主理人<br>穩定建立專業形象</h3>
+      <p class="ip-highlight">協助從零開始建立頻道方向，克服對鏡頭的陌生感，逐步找到屬於自己的表達節奏，穩定成長中。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">陪跑中</span>
+        <span class="ip-stat-label">從迷惘到有步調</span>
+      </div>
+      <a href="https://www.instagram.com/benny178178?igsh=ZTNhYzdzdjc3Njdk" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 5 -->
+    <div class="ip-card">
+      <span class="ip-num">05</span>
+      <span class="ip-industry">飾品批發</span>
+      <h3 class="ip-title">飾品批發老闆娘<br>建立個人品牌信心</h3>
+      <p class="ip-highlight">從完全不知道如何面對鏡頭，到建立穩定的內容輸出步調，一步步找到屬於老闆娘的頻道語言。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">陪跑中</span>
+        <span class="ip-stat-label">從零到有節奏</span>
+      </div>
+      <a href="https://www.instagram.com/chuchu.623?igsh=MTd1eGFtdGh0eXZmeg==" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 6 -->
+    <div class="ip-card">
+      <span class="ip-num">06</span>
+      <span class="ip-industry">不動產服務</span>
+      <h3 class="ip-title">驗屋公司主理人<br>快速上手短影音</h3>
+      <p class="ip-highlight">協助從專業知識中提煉出適合短影音的內容方向，建立拍攝信心與持續輸出的步調，穩健成長中。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">陪跑中</span>
+        <span class="ip-stat-label">建立短影音信心</span>
+      </div>
+      <a href="https://www.instagram.com/iceborther?igsh=ZXk3ZWYzeGhkcTll" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SECTION 02: 品牌影片 -->
+<div class="section-wrap" id="brand">
+  <div class="section-label">
+    <span class="section-num">02 — Brand Film</span>
+    <div class="section-rule"></div>
+  </div>
+  <h2 class="section-title">品牌形象影片製作</h2>
+  <p class="section-desc">單次影片規劃製作服務，涵蓋各種行業的品牌形象短片，從腳本企劃、拍攝到後製剪輯，打造能有效傳遞品牌價值的影像內容。</p>
+
+  <div class="video-grid">
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">餐飲業</p>
+      <h3 class="v-title">餐廳活動宣傳影片</h3>
+      <div class="v-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        無廣告 · 16 萬觀看
+      </div>
+      <a href="https://vt.tiktok.com/ZSH5V2Uta/" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">刺青藝術</p>
+      <h3 class="v-title">刺青師傅<br>個人形象建立影片</h3>
+      <a href="https://www.instagram.com/reel/DBLoCGNS3f7/?igsh=YTVsOGNmMXJmam5i" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">命理諮詢</p>
+      <h3 class="v-title">算命老師<br>品牌形象建立影片</h3>
+      <a href="https://www.instagram.com/reel/C84jhDKvNo1/?igsh=MWpwZzR2am05Znc3bw==" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">美髮業</p>
+      <h3 class="v-title">美髮品牌<br>形象宣傳影片</h3>
+      <a href="https://www.instagram.com/reel/C29VL0QPTms/?igsh=MWZnemlwYndha20zZw==" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">美髮業</p>
+      <h3 class="v-title">美髮師頻道影片<br>純影片製作</h3>
+      <a href="https://www.instagram.com/reel/Cve5gqlPGec/?igsh=emVueGpiMTNlOTl5" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">電商</p>
+      <h3 class="v-title">開箱類別<br>產品展示影片</h3>
+      <a href="https://www.instagram.com/reel/CzqYpEQxZ46/?igsh=dDRocDJ3ZXNncnh3" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <div class="v-card">
+      <div class="v-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <p class="v-industry">旅宿業</p>
+      <h3 class="v-title">民宿品牌<br>宣傳形象影片</h3>
+      <a href="https://www.instagram.com/reel/DB8WAfdSwsW/?igsh=MWZ4YWtqYWJ1OGhqcg==" class="v-link" target="_blank">
+        觀看影片
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CONFIDENTIAL CARD 1 -->
+    <div class="v-card v-card-confidential">
+      <div class="v-icon v-icon-lock">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <p class="v-industry">醫療機構</p>
+      <h3 class="v-title">台北榮總<br>醫療教育訓練 × 政府相關影片</h3>
+      <div class="v-confidential-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        內部影片 · 不公開展示
+      </div>
+    </div>
+
+    <!-- CONFIDENTIAL CARD 2 -->
+    <div class="v-card v-card-confidential">
+      <div class="v-icon v-icon-lock">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <p class="v-industry">生技產業</p>
+      <h3 class="v-title">遠東生技公司<br>產品內部訓練影片</h3>
+      <div class="v-confidential-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        內部影片 · 不公開展示
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <p class="contact-en">Let's work together</p>
+    <h2 class="contact-title">準備好建立<br>你的個人頻道了嗎？</h2>
+    <p class="contact-sub">
+      不論你現在在哪個階段——完全沒拍過影片、不知道怎麼開始，<br>
+      或是已經有在拍但沒有成效——<br>
+      我們都能幫你找到屬於你自己的頻道方向。
+    </p>
+    <a href="https://lin.ee/okmSdK8" class="btn-rust" target="_blank">加 LINE 免費諮詢 →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="footer-zh">映緹影像工作室</span>
+    <span class="footer-en">IntiDoga</span>
+  </div>
+  <span class="footer-copy">© 2026 · 製造自然流量的專門戶</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+  });
+</script>
+</body>
+</html>
