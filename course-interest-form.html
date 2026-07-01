@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IntiDoga · 剪輯體驗課登記</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#2D4F45;--g2:#3d6b5f;--g3:#1e342d;--o:#C85A2A;--o2:#e0703f;--cr:#F4EFE6;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--cr);min-height:100vh;color:#333;}
+.site-header{background:var(--g);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.logo-mark{display:flex;align-items:center;gap:12px;}
+.logo-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--cr);display:flex;align-items:center;justify-content:center;}
+.logo-inner{width:14px;height:14px;border-radius:50%;background:var(--cr);opacity:.45}
+.site-name{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--cr);letter-spacing:.06em}
+.site-tagline{font-size:11px;color:#8ab3a8;letter-spacing:.08em}
+.hero{text-align:center;padding:48px 24px 8px;}
+.hero-badge{display:inline-block;background:var(--o);color:white;font-size:12px;letter-spacing:.06em;padding:5px 16px;border-radius:20px;margin-bottom:16px;}
+.hero-title{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:400;color:var(--g3);letter-spacing:.06em;margin-bottom:10px;}
+.hero-sub{font-size:13px;color:#777;letter-spacing:.04em;line-height:1.8}
+.price-row{display:flex;justify-content:center;align-items:baseline;gap:10px;margin:18px 0 4px;}
+.price-old{font-size:15px;color:#aaa;text-decoration:line-through}
+.price-new{font-family:'Noto Serif TC',serif;font-size:32px;color:var(--o);font-weight:500}
+.price-note{font-size:12px;color:#888;margin-bottom:30px}
+.container{max-width:640px;margin:0 auto;padding:0 20px 60px;}
+.card{background:white;border-radius:14px;border:1.5px solid #c5d8d3;margin-bottom:16px;overflow:hidden;}
+.card-head{background:var(--g);padding:12px 20px;display:flex;align-items:center;gap:10px;}
+.step-circle{width:24px;height:24px;border-radius:50%;background:var(--o);color:white;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.card-head-title{font-size:13px;font-weight:500;color:var(--cr);letter-spacing:.04em}
+.card-body{padding:22px 20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fg.full{grid-column:1 / -1}
+.fg label{font-size:12px;font-weight:500;color:var(--g);letter-spacing:.03em}
+.fg .opt{font-size:11px;color:#aaa;font-weight:400}
+.fg input,.fg textarea{border:1.5px solid #c5d8d3;border-radius:8px;padding:9px 12px;font-size:13px;background:white;font-family:inherit;color:#333;outline:none;transition:border-color .15s;}
+.fg input:focus,.fg textarea:focus{border-color:var(--g)}
+.fg textarea{resize:vertical;min-height:64px;line-height:1.6}
+.opts-row{display:flex;flex-wrap:wrap;gap:8px}
+.opt-btn{border:1.5px solid #b8d8d2;border-radius:9px;padding:9px 14px;font-size:13px;background:white;color:var(--g3);cursor:pointer;text-align:center;font-family:inherit;transition:all .15s;}
+.opt-btn:hover{background:#eaf3f0;border-color:var(--g)}
+.opt-btn.sel{background:var(--g);border-color:var(--g);color:var(--cr);font-weight:500}
+.pay-box{background:#eaf3f0;border:1.5px solid var(--g);border-radius:9px;padding:16px 18px;font-size:13px;color:var(--g3);line-height:2;}
+.pay-box .pay-title{font-weight:500;color:var(--g3);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.pay-box .pay-title:before{content:"";width:4px;height:14px;background:var(--o);display:inline-block;border-radius:2px;}
+.pay-note{font-size:12px;color:#7a3b1e;background:#fff8f4;border:1.5px solid #e0a080;border-radius:8px;padding:10px 14px;margin-top:12px;line-height:1.8;}
+.submit-btn{width:100%;background:var(--o);color:white;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:500;cursor:pointer;margin-top:6px;font-family:inherit;letter-spacing:.06em;transition:background .15s;}
+.submit-btn:hover{background:var(--o2)}
+.submit-btn:disabled{background:#ccc;cursor:not-allowed}
+.success{text-align:center;padding:40px 24px;display:none;}
+.success-icon{width:56px;height:56px;border-radius:50%;background:var(--g);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;}
+.success-title{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--g3);margin-bottom:10px;}
+.success-msg{font-size:13px;color:#666;line-height:1.9}
+.line-btn{display:inline-block;margin-top:20px;background:#06C755;color:white;border:none;border-radius:8px;padding:11px 28px;font-size:14px;cursor:pointer;font-family:inherit;text-decoration:none;}
+.reset-btn{margin-top:12px;background:var(--g);color:var(--cr);border:none;border-radius:8px;padding:11px 28px;font-size:14px;cursor:pointer;font-family:inherit;}
+.reset-btn:hover{background:var(--g2)}
+.site-footer{background:var(--g3);color:#8ab3a8;text-align:center;padding:20px;font-size:12px;letter-spacing:.04em;}
+@media(max-width:480px){
+  .form-grid{grid-template-columns:1fr}
+  .site-header{padding:0 16px}
+  .hero{padding:36px 16px 8px}
+  .hero-title{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-mark">
+    <div class="logo-circle"><div class="logo-inner"></div></div>
+    <div><div class="site-name">IntiDoga</div></div>
+  </div>
+  <div class="site-tagline">VIDEO CLIP STUDIO</div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">CAPCUT 剪輯課程</div>
+  <div class="hero-title">體驗課興趣登記</div>
+  <div class="hero-sub">1對1實戰教學 · 零基礎也上手<br>填寫以下資料，我們會盡快與你聯繫確認</div>
+  <div class="price-row">
+    <span class="price-old">原價 $3,500</span>
+    <span class="price-new">$1,999</span>
+  </div>
+  <div class="price-note">體驗課 90 分鐘 · 若接續全科保證班可折抵</div>
+</div>
+
+<div class="container">
+  <input type="hidden" id="sheetUrl" value="https://script.google.com/macros/s/AKfycbwIbhaCHW7-wCVyoSAO2ZYzcbONUP-0GpLIQ0ebxNtjGrZjHFy-zmwYKdnS_k_K4vO9/exec" />
+
+  <div id="formFlow">
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">1</div><div class="card-head-title">你的基本資料</div></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="fg"><label>姓名 *</label><input type="text" id="fName" placeholder="你的名字"></div>
+          <div class="fg"><label>聯絡電話 *</label><input type="tel" id="fPhone" placeholder="0912-345-678"></div>
+        </div>
+        <div class="pay-note" style="margin-top:14px">📌 請加入我們的官方 LINE，方便後續聯繫確認上課時段：<br>
+          <a href="https://lin.ee/T5K8k3h" target="_blank" style="display:inline-block;margin-top:8px;background:#06C755;color:white;text-decoration:none;border-radius:8px;padding:9px 20px;font-size:13px;">加入官方 LINE ✦</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">2</div><div class="card-head-title">關於你的剪輯經驗</div></div>
+      <div class="card-body">
+        <div class="fg full">
+          <label>目前剪映（CapCut）使用經驗 *</label>
+          <div class="opts-row" id="expOpts">
+            <button type="button" class="opt-btn" data-v="完全沒碰過">完全沒碰過</button>
+            <button type="button" class="opt-btn" data-v="略懂但常卡關">略懂但常卡關</button>
+            <button type="button" class="opt-btn" data-v="有基礎想進階">有基礎想進階</button>
+          </div>
+        </div>
+        <div class="fg full">
+          <label>想學剪輯的目的 <span class="opt">（可複選想法，簡單寫也可以）</span></label>
+          <textarea id="fGoal" placeholder="例如：想經營自己的帳號／工作上需要／想幫品牌拍片…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">3</div><div class="card-head-title">付款方式說明</div></div>
+      <div class="card-body">
+        <div class="pay-box">
+          <div class="pay-title">體驗課 $1,999（90 分鐘）</div>
+          1. 確認上課時間後，匯款即完成預約<br>
+          2. 參加體驗課的學員，若後續加入全科保證班，此金額可完全折抵
+        </div>
+        <div class="pay-note">⚠️ 目前僅需先填寫登記資料，尚未需要付款。確認上課時段後，我們會透過 LINE 提供匯款帳號，完成匯款即完成預約 🙏</div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="doSubmit()">送出登記</button>
+  </div>
+
+  <div class="success" id="successBox">
+    <div class="success-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F4EFE6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="success-title">登記已收到！</div>
+    <div class="success-msg" id="successMsg"></div>
+    <br>
+    <button class="reset-btn" onclick="resetForm()">再填一次</button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  © IntiDoga Video Clip Studio &nbsp;·&nbsp; 保留一切權利
+</footer>
+
+<script>
+let selExp=null;
+
+document.querySelectorAll('#expOpts .opt-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    selExp=btn.dataset.v;
+    document.querySelectorAll('#expOpts .opt-btn').forEach(b=>b.classList.toggle('sel',b===btn));
+  };
+});
+
+async function doSubmit(){
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  const goal=document.getElementById('fGoal').value.trim();
+  if(!name||!phone){alert('請填寫姓名和聯絡電話');return;}
+  if(!selExp){alert('請選擇目前的剪映使用經驗');return;}
+
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='送出中…';
+  const url=document.getElementById('sheetUrl').value.trim();
+  const payload={name,phone,experience:selExp,goal};
+  if(url){
+    try{await fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});}
+    catch(e){console.warn('送出失敗',e);}
+  }
+
+  document.getElementById('formFlow').style.display='none';
+  const box=document.getElementById('successBox');box.style.display='block';
+  document.getElementById('successMsg').innerHTML='<strong>'+name+'</strong> 的體驗課登記已收到！<br>我們將盡快透過 LINE 與你聯繫，確認上課時段與付款方式<br><br>期待與你的學習之旅 ✦';
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+function resetForm(){
+  document.getElementById('successBox').style.display='none';
+  document.getElementById('formFlow').style.display='block';
+  ['fName','fPhone','fGoal'].forEach(id=>document.getElementById(id).value='');
+  selExp=null;
+  document.querySelectorAll('#expOpts .opt-btn').forEach(b=>b.classList.remove('sel'));
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=false;btn.textContent='送出登記';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
