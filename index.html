@@ -431,13 +431,17 @@ nav {
   display: inline-flex; align-items: center; gap: 0.5rem;
   font-size: 0.72rem;
   letter-spacing: 0.1em;
-  color: var(--muted);
+  color: var(--cream);
   text-decoration: none;
   text-transform: uppercase;
-  transition: color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
   margin-top: 0.3rem;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid var(--border-rust);
+  border-radius: 3px;
+  width: fit-content;
 }
-.ip-link:hover { color: var(--rust-light); }
+.ip-link:hover { background: var(--rust); border-color: var(--rust); color: var(--cream); }
 .ip-link svg { width: 13px; height: 13px; }
 
 /* DIVIDER */
@@ -511,14 +515,16 @@ nav {
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cream);
   text-decoration: none;
-  transition: color 0.2s;
-  border-top: 1px solid var(--border);
-  padding-top: 0.9rem;
+  transition: background 0.2s, border-color 0.2s;
   margin-top: auto;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border-rust);
+  border-radius: 3px;
+  width: fit-content;
 }
-.v-link:hover { color: var(--rust-light); }
+.v-link:hover { background: var(--rust); border-color: var(--rust); }
 .v-link svg { width: 12px; }
 
 /* CONTACT */
@@ -759,6 +765,22 @@ footer {
     <!-- CARD 3 -->
     <div class="ip-card">
       <span class="ip-num">03</span>
+      <span class="ip-industry">精緻生活</span>
+      <h3 class="ip-title">咪叮<br>精緻女孩・美感生活分享者</h3>
+      <p class="ip-highlight">精準分析個人生活內容調性與觀眾喜好，找到最貼近她個人特質的敘事方式，平均單支影片穩定達 10 萬觀看。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">10 萬</span>
+        <span class="ip-stat-label">平均單支影片觀看數</span>
+      </div>
+      <a href="https://www.instagram.com/mid_daily_?igsh=OGt3ejljcmtmZDR5" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="ip-card">
+      <span class="ip-num">04</span>
       <span class="ip-industry">寵物品牌</span>
       <h3 class="ip-title">韓國寵物品牌主理人<br>無廣告首支破 13 萬</h3>
       <p class="ip-highlight">零廣告投放，純靠內容策略與自然流量，首支影片突破 13 萬觀看，驗證精準選題的爆發力。</p>
@@ -768,22 +790,6 @@ footer {
       </div>
       <a href="https://www.instagram.com/reel/DRw_JMsEe6A/?igsh=NnVjbHEzZW16ZzY=" class="ip-link" target="_blank">
         查看影片
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-      </a>
-    </div>
-
-    <!-- CARD 4 -->
-    <div class="ip-card">
-      <span class="ip-num">04</span>
-      <span class="ip-industry">居家裝潢</span>
-      <h3 class="ip-title">窗簾品牌主理人<br>穩定建立專業形象</h3>
-      <p class="ip-highlight">協助從零開始建立頻道方向，克服對鏡頭的陌生感，逐步找到屬於自己的表達節奏，穩定成長中。</p>
-      <div class="ip-stat">
-        <span class="ip-stat-val">陪跑中</span>
-        <span class="ip-stat-label">從迷惘到有步調</span>
-      </div>
-      <a href="https://www.instagram.com/benny178178?igsh=ZTNhYzdzdjc3Njdk" class="ip-link" target="_blank">
-        查看帳號
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
     </div>
@@ -815,6 +821,22 @@ footer {
         <span class="ip-stat-label">建立短影音信心</span>
       </div>
       <a href="https://www.instagram.com/iceborther?igsh=ZXk3ZWYzeGhkcTll" class="ip-link" target="_blank">
+        查看帳號
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- CARD 7 -->
+    <div class="ip-card">
+      <span class="ip-num">07</span>
+      <span class="ip-industry">傳統產業</span>
+      <h3 class="ip-title">木匠哥<br>翻轉原本流量困境</h3>
+      <p class="ip-highlight">原帳號流量長期低迷，重新規劃頻道經營方向與內容企劃後，成功打造單支破萬觀看的影片。</p>
+      <div class="ip-stat">
+        <span class="ip-stat-val">破萬</span>
+        <span class="ip-stat-label">單支影片觀看數</span>
+      </div>
+      <a href="https://www.instagram.com/carpenter.boss63?igsh=MWNkeGplNHc2MmVlaw==" class="ip-link" target="_blank">
         查看帳號
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
