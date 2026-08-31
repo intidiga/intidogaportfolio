@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>映緹影像 · 剪輯課程 學習需求調查</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#2D4F45;--g2:#3d6b5f;--g3:#1e342d;--o:#C85A2A;--o2:#e0703f;--cr:#F4EFE6;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--cr);min-height:100vh;color:#333;}
+.site-header{background:var(--g);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.logo-mark{display:flex;align-items:center;gap:12px;}
+.logo-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--cr);display:flex;align-items:center;justify-content:center;}
+.logo-inner{width:14px;height:14px;border-radius:50%;background:var(--cr);opacity:.45}
+.site-name{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--cr);letter-spacing:.06em}
+.site-tagline{font-size:11px;color:#8ab3a8;letter-spacing:.08em}
+.hero{text-align:center;padding:52px 24px 30px;}
+.hero-title{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:400;color:var(--g3);letter-spacing:.06em;margin-bottom:10px;}
+.hero-sub{font-size:13px;color:#777;letter-spacing:.03em;line-height:1.9;max-width:520px;margin:0 auto}
+.container{max-width:640px;margin:0 auto;padding:0 20px 60px;}
+.card{background:white;border-radius:14px;border:1.5px solid #c5d8d3;margin-bottom:16px;overflow:hidden;}
+.card-head{background:var(--g);padding:12px 20px;display:flex;align-items:center;gap:10px;}
+.step-circle{width:24px;height:24px;border-radius:50%;background:var(--o);color:white;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.card-head-title{font-size:13px;font-weight:500;color:var(--cr);letter-spacing:.04em}
+.card-body{padding:22px 20px}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.fg:last-child{margin-bottom:0}
+.fg label{font-size:13.5px;font-weight:500;color:var(--g3);letter-spacing:.02em;line-height:1.6}
+.fg .hint-sm{font-size:11.5px;color:#999;font-weight:400;margin-top:-2px}
+.fg input[type=text],.fg input[type=tel],.fg textarea{border:1.5px solid #c5d8d3;border-radius:8px;padding:10px 12px;font-size:13.5px;background:white;font-family:inherit;color:#333;outline:none;transition:border-color .15s;width:100%;}
+.fg input:focus,.fg textarea:focus{border-color:var(--g)}
+.fg textarea{resize:vertical;min-height:64px;line-height:1.6}
+.radio-group,.check-group{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.opt{display:flex;align-items:center;gap:10px;border:1.5px solid #c5d8d3;border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .15s;background:white;}
+.opt:hover{background:#eaf3f0;border-color:var(--g)}
+.opt input{accent-color:var(--o);width:16px;height:16px;flex-shrink:0;}
+.opt span{font-size:13.5px;color:#333}
+.opt.checked{background:#eaf3f0;border-color:var(--g)}
+.other-input{margin-top:6px;display:none}
+.other-input.show{display:block}
+.submit-btn{width:100%;background:var(--o);color:white;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:500;cursor:pointer;margin-top:6px;font-family:inherit;letter-spacing:.06em;transition:background .15s;}
+.submit-btn:hover{background:var(--o2)}
+.submit-btn:disabled{background:#ccc;cursor:not-allowed}
+.success{text-align:center;padding:50px 24px;display:none;}
+.success-icon{width:56px;height:56px;border-radius:50%;background:var(--g);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;}
+.success-title{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--g3);margin-bottom:10px;}
+.success-msg{font-size:13px;color:#666;line-height:1.9}
+.site-footer{background:var(--g3);color:#8ab3a8;text-align:center;padding:20px;font-size:12px;letter-spacing:.04em;}
+.req{color:var(--o)}
+@media(max-width:480px){
+  .site-header{padding:0 16px}
+  .hero{padding:36px 16px 24px}
+  .hero-title{font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-mark">
+    <div class="logo-circle"><div class="logo-inner"></div></div>
+    <div><div class="site-name">映緹影像</div></div>
+  </div>
+  <div class="site-tagline">YINGDI PHOTOGRAPHY</div>
+</header>
+
+<div class="hero">
+  <div class="hero-title">剪輯課程 · 學習需求調查</div>
+  <div class="hero-sub">為了讓體驗課與後續課程內容更貼近你的需求，<br>請花 3-5 分鐘填寫以下問題，我們會依據回覆為你規劃專屬課程內容。</div>
+</div>
+
+<div class="container">
+  <input type="hidden" id="sheetUrl" value="https://script.google.com/macros/s/AKfycbxuX3gb_OHRHqPE8gpKb0SE75yb4HYoocgsCi3OXZ_Zu3HRCcXAOGuiUFZoEUC0_BbMug/exec" />
+
+  <form id="intakeForm">
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">1</div><div class="card-head-title">基本資料</div></div>
+      <div class="card-body">
+        <div class="fg">
+          <label>姓名 <span class="req">*</span></label>
+          <input type="text" id="fName" placeholder="你的名字" required>
+        </div>
+        <div class="fg">
+          <label>聯絡方式（電話或 LINE ID） <span class="req">*</span></label>
+          <input type="text" id="fContact" placeholder="0912-345-678 或 LINE ID" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">2</div><div class="card-head-title">基本狀況</div></div>
+      <div class="card-body">
+        <div class="fg">
+          <label>目前的剪輯經驗？（用什麼工具、大概程度） <span class="req">*</span></label>
+          <textarea id="fExperience" placeholder="例如：只用過手機 CapCut 剪簡單片段，沒碰過電腦版" required></textarea>
+        </div>
+        <div class="fg">
+          <label>平常都用什麼設備拍攝？（可複選） <span class="req">*</span></label>
+          <div class="check-group" id="deviceGroup">
+            <label class="opt"><input type="checkbox" name="device" value="手機"><span>手機</span></label>
+            <label class="opt"><input type="checkbox" name="device" value="相機（單眼/微單）"><span>相機（單眼/微單）</span></label>
+            <label class="opt"><input type="checkbox" name="device" value="空拍機"><span>空拍機</span></label>
+            <label class="opt"><input type="checkbox" name="device" value="穩定器/雲台"><span>穩定器/雲台</span></label>
+            <label class="opt"><input type="checkbox" name="device" value="其他" id="deviceOtherCk"><span>其他</span></label>
+          </div>
+          <input type="text" class="other-input" id="deviceOtherInput" placeholder="請說明">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">3</div><div class="card-head-title">學習目標</div></div>
+      <div class="card-body">
+        <div class="fg">
+          <label>學完之後最想做什麼？ <span class="req">*</span></label>
+          <div class="radio-group" id="goalGroup">
+            <label class="opt"><input type="radio" name="goal" value="經營自己的個人品牌帳號"><span>經營自己的個人品牌帳號</span></label>
+            <label class="opt"><input type="radio" name="goal" value="接案剪輯"><span>接案剪輯</span></label>
+            <label class="opt"><input type="radio" name="goal" value="兩者都要"><span>兩者都要</span></label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>如果有想接案或經營的領域，是哪個類型？</label>
+          <div class="hint-sm">例如：美食、旅遊、寵物、業配、生活風格⋯（若尚未確定可留空）</div>
+          <input type="text" id="fField" placeholder="請填寫">
+        </div>
+        <div class="fg">
+          <label>有沒有想模仿風格的參考帳號？</label>
+          <div class="hint-sm">可貼 1-3 個 IG / YouTube 連結，沒有可留空</div>
+          <textarea id="fReference" placeholder="請貼上連結，或簡述喜歡的風格"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">4</div><div class="card-head-title">時間投入</div></div>
+      <div class="card-body">
+        <div class="fg">
+          <label>每週大概能投入多少時間練習／完成作業？ <span class="req">*</span></label>
+          <div class="radio-group" id="timeGroup">
+            <label class="opt"><input type="radio" name="time" value="2 小時以內"><span>2 小時以內</span></label>
+            <label class="opt"><input type="radio" name="time" value="2-4 小時"><span>2-4 小時</span></label>
+            <label class="opt"><input type="radio" name="time" value="4-8 小時"><span>4-8 小時</span></label>
+            <label class="opt"><input type="radio" name="time" value="8 小時以上"><span>8 小時以上</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="step-circle">5</div><div class="card-head-title">痛點與期待</div></div>
+      <div class="card-body">
+        <div class="fg">
+          <label>目前剪片最卡的環節是什麼？（可複選） <span class="req">*</span></label>
+          <div class="check-group" id="painGroup">
+            <label class="opt"><input type="checkbox" name="pain" value="轉場"><span>轉場</span></label>
+            <label class="opt"><input type="checkbox" name="pain" value="調色"><span>調色</span></label>
+            <label class="opt"><input type="checkbox" name="pain" value="字幕"><span>字幕</span></label>
+            <label class="opt"><input type="checkbox" name="pain" value="配樂"><span>配樂</span></label>
+            <label class="opt"><input type="checkbox" name="pain" value="節奏感"><span>節奏感</span></label>
+            <label class="opt"><input type="checkbox" name="pain" value="其他" id="painOtherCk"><span>其他</span></label>
+          </div>
+          <input type="text" class="other-input" id="painOtherInput" placeholder="請說明">
+        </div>
+        <div class="fg">
+          <label>希望這門課結束後，具體能做到什麼程度？ <span class="req">*</span></label>
+          <div class="hint-sm">用一句話描述你心目中「畢業時」的樣子</div>
+          <textarea id="fExpectation" placeholder="例如：可以獨立完成一支 60 秒的美食業配影片，從拍攝到交付" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">送出問卷</button>
+  </form>
+
+  <div class="success" id="successBox">
+    <div class="success-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F4EFE6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="success-title">問卷已送出！</div>
+    <div class="success-msg">謝謝你花時間填寫，我們會依據你的回覆<br>為你規劃專屬的體驗課內容<br><br>期待與你見面 ✦</div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  © 映緹影像 YINGDI PHOTOGRAPHY &nbsp;·&nbsp; 保留一切權利
+</footer>
+
+<script>
+function setupOther(groupSelector, otherCkId, otherInputId){
+  const otherCk = document.getElementById(otherCkId);
+  const otherInput = document.getElementById(otherInputId);
+  otherCk.addEventListener('change', ()=>{
+    otherInput.classList.toggle('show', otherCk.checked);
+    if(!otherCk.checked) otherInput.value='';
+  });
+}
+setupOther('#deviceGroup','deviceOtherCk','deviceOtherInput');
+setupOther('#painGroup','painOtherCk','painOtherInput');
+
+document.querySelectorAll('.opt input').forEach(inp=>{
+  inp.addEventListener('change', ()=>{
+    if(inp.type==='radio'){
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r=>r.closest('.opt').classList.remove('checked'));
+    }
+    inp.closest('.opt').classList.toggle('checked', inp.checked);
+  });
+});
+
+document.getElementById('intakeForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+
+  const device = Array.from(document.querySelectorAll('input[name="device"]:checked')).map(i=>i.value==='其他'?('其他：'+document.getElementById('deviceOtherInput').value):i.value);
+  const pain = Array.from(document.querySelectorAll('input[name="pain"]:checked')).map(i=>i.value==='其他'?('其他：'+document.getElementById('painOtherInput').value):i.value);
+  const goal = document.querySelector('input[name="goal"]:checked');
+  const time = document.querySelector('input[name="time"]:checked');
+
+  if(!goal){alert('請選擇學習目標');return;}
+  if(!time){alert('請選擇每週可投入時間');return;}
+  if(device.length===0){alert('請至少選擇一項拍攝設備');return;}
+  if(pain.length===0){alert('請至少選擇一項卡關環節');return;}
+
+  const payload = {
+    name: document.getElementById('fName').value.trim(),
+    contact: document.getElementById('fContact').value.trim(),
+    experience: document.getElementById('fExperience').value.trim(),
+    device: device.join('、'),
+    goal: goal.value,
+    field: document.getElementById('fField').value.trim(),
+    reference: document.getElementById('fReference').value.trim(),
+    time: time.value,
+    pain: pain.join('、'),
+    expectation: document.getElementById('fExpectation').value.trim(),
+    submittedAt: new Date().toISOString()
+  };
+
+  btn.disabled = true; btn.textContent = '送出中…';
+  const url = document.getElementById('sheetUrl').value.trim();
+  if(url && url.startsWith('http')){
+    try{ await fetch(url, {method:'POST', mode:'no-cors', body: JSON.stringify(payload)}); }
+    catch(err){ console.warn('送出失敗', err); }
+  }
+
+  document.getElementById('intakeForm').style.display='none';
+  document.getElementById('successBox').style.display='block';
+  document.getElementById('successBox').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
